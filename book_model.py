@@ -1,27 +1,18 @@
-class Book:
-    def __init__(self, id, title, author, published_date):
-        self.id = id
-        self.title = title
-        self.author = author
-        self.published_date = published_date
+# book_model.py
+from flask_sqlalchemy import SQLAlchemy
 
-def book_to_dict(book):
-    return {
-        "id": book.id,
-        "title": book.title,
-        "author": book.author,
-        "published_date": book.published_date,
-    }
+db = SQLAlchemy()
 
-def dict_to_book(book_dict):
-    return Book(
-        id=book_dict["id"],
-        title=book_dict["title"],
-        author=book_dict["author"],
-        published_date=book_dict["published_date"],
-    )
+class Book(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(80), nullable=False)
+    author = db.Column(db.String(120), nullable=False)
+    published_date = db.Column(db.String(10), nullable=False)
 
-books = [
-    book_to_dict(Book(1, "1984", "George Orwell", "1949-06-08")),
-    book_to_dict(Book(2, "To Kill a Mockingbird", "Harper Lee", "1960-07-11")),
-]
+    def as_dict(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'author': self.author,
+            'published_date': self.published_date
+        }
